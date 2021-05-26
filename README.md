@@ -43,8 +43,3 @@ python servidor.py
 
 #### Clientes
 
-Para iniciar a servidor, execute:
-
-```
-python servidor.py
-```
