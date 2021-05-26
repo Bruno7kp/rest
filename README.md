@@ -1,16 +1,16 @@
-### REST
+# REST
 
-#### Requisitos
+## Requisitos
 
-- CRUD de usuários
-- Validação de CPF
-- Operação matemática simples
-- 4 clientes em linguagens diferentes
-- 2 cliente com interface gráfica (em deles em Python)
-- 1 cliente em GO
+- [x] CRUD de usuários
+- [x] Validação de CPF
+- [x] Operação matemática simples
+- [ ] 4 clientes em linguagens diferentes
+- [ ] 2 cliente com interface gráfica (em deles em Python)
+- [x] 1 cliente em GO
 
 
-#### Instalação
+## Instalação
 
 1. Clone ou baixe o repositório.
 2. Crie um ambiente virtual:
@@ -33,7 +33,7 @@ venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-#### Servidor
+## Servidor
 
 Para iniciar a servidor, execute:
 
@@ -41,5 +41,26 @@ Para iniciar a servidor, execute:
 python servidor.py
 ```
 
-#### Clientes
+## Clientes
 
+### Sem interface gráfica
+
+**PHP**
+
+Versão utilizada: 7.3
+
+Dependências: Precisa estar com o cURL habilitado (já vem habilitado por padrão)
+
+```
+php clientes/cliente.php
+```
+
+---
+
+**GO**
+
+Versão utilizada: 1.16.4
+
+```
+go run clientes/cliente.go
+```
