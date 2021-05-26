@@ -7,7 +7,7 @@ from src.user import User
 app = Flask(__name__)
 api = Api(app)
 api.add_resource(User, "/user/<string:nome>")
-api.add_resource(Calc, "/calc/<int:num1>/<string:operador>/<int:num2>")
+api.add_resource(Calc, "/calc/<string:num1>/<string:operador>/<string:num2>")
 api.add_resource(Cpf, "/cpf/<string:cpf>")
 
 app.run(debug=True)

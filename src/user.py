@@ -54,5 +54,5 @@ class User(Resource):
 
     def delete(self, nome):
         db.remove(where('nome') == nome)
-        return Response(response="{} deletado.".format(nome), mimetype="text/plain", status=200)
+        return Response(response="{} removido(a).".format(nome), mimetype="text/plain", status=200)
 
