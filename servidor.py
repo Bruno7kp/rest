@@ -4,7 +4,7 @@ from flask_restful import Api
 # Classes criadas para rodar os serviços de validação de CPF, cadastro de usuário, etc.
 from src.calc import Calc
 from src.cpf import Cpf
-from src.user import User
+from src.user import User, UserSearchAll
 
 # Inicia a aplicação em python
 app = Flask(__name__)
@@ -13,6 +13,8 @@ api = Api(app)
 # Define as rotas utilizadas para acessar os serviços
 # Rota para o gerenciamento do usuário
 api.add_resource(User, "/user/<string:nome>")
+# Rota para listar todos os usuários
+api.add_resource(UserSearchAll, "/users")
 # Rota para o cálculo de dois números
 api.add_resource(Calc, "/calc/<string:num1>/<string:operador>/<string:num2>")
 # Rota para validar o cpf

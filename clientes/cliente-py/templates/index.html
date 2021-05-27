@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% set active_page = "index" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Cliente Python</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciador de usuários</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="/gerenciador" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Validador de CPF</h5>
+                    <p class="card-text">Acesse a página para validar algum CPF!</p>
+                    <a href="/cpf" class="btn btn-primary">Validar CPF</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Cálculo</h5>
+                    <p class="card-text">Faça um cálculo simples entre dois números escolhendo um dos operadores!</p>
+                    <a href="/calculo" class="btn btn-primary">Calcular</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Trabalho</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -81,3 +81,10 @@ class User(Resource):
         # Retorna sucesso na remoção
         return Response(response="{} removido(a).".format(nome), mimetype="text/plain", status=200)
 
+
+# Classe utilizada para buscar todos os usuários
+class UserSearchAll(Resource):
+    def get(self):
+        users = db.all()
+        return Response(response=json.dumps(users, ensure_ascii=False), mimetype='application/json', status=200)
+
