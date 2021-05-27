@@ -1,18 +1,21 @@
 import re
-
 from flask import Response
 from flask_restful import Resource
 
 
+# Classe que irá receber os dados a partir da URL /cpf/valor
 class Cpf(Resource):
     def get(self, cpf):
+        # Essa classe necessita apenas do GET, já que não precisa cadastrar nem remover nada, apenas validar o CPF
+        # Se for válido retorna status 200 (sucesso), se não retorna status 400 (erro)
         if validate(cpf):
             return Response(response="CPF válido", mimetype="text/plain", status=200)
         return Response(response="CPF inválido", mimetype="text/plain", status=400)
 
 
+# Método que valida o cpf
 def validate(cpf: str) -> bool:
-    # Se passar apenas números sem formatação
+    # Se passar apenas números sem formatação, adiciona a formatação
     if len(cpf) == 11:
         cpf = '{}.{}.{}-{}'.format(cpf[:3], cpf[3:6], cpf[6:9], cpf[9:])
 
