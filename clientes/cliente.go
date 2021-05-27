@@ -18,7 +18,7 @@ func main() {
     fmt.Println("::: Cliente Go :::")
     // reader é usado para ler as mensagens digitadas no cliente
     reader := bufio.NewReader(os.Stdin)
-    // O for se condições gera um loop infinito, até parar com o break
+    // O for sem condições gera um loop infinito, até parar com o break
     for {
         // Mostra as opções de serviços da aplicação
         fmt.Println("CRUD :: Gerenciador de usuários || CPF :: Validador de CPF || CALC :: Cálculo entre dois números || Q :: Sair")
@@ -139,7 +139,7 @@ func main() {
                     // Para utilizar o PUT, é preciso criar uma requisição diferente
                     // Cria-se o cliente primeiro;
                     client := &http.Client{}
-                    // Crias-se os valores a serem enviados na requisição:
+                    // Cria-se os valores a serem enviados na requisição:
                     data := url.Values{
                         "idade": {idade},
                         "ocupacao": {ocupacao}}

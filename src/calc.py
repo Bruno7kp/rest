@@ -5,7 +5,7 @@ from flask_restful import Resource
 # Classe que irá receber os dados a partir da URL /calc/numero1/operador/numero2
 class Calc(Resource):
     def get(self, num1, operador, num2):
-        # Tenta transformar o valor enviado para os números para o tipo float
+        # Tenta transformar o valor enviado em números do tipo float
         # Se ocorrer erro durante a transformação (ou seja, foi enviado um valor que não seja número), retorna como
         # "Números inválidos"
         try:
