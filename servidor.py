@@ -25,5 +25,6 @@ def page_not_found(e):
     # Retorna uma resposta padrão com o status 404
     return Response(response="Recurso não encontrado", mimetype="text/plain", status=404)
 
+
 # Inicia o servidor
 app.run(debug=True)
