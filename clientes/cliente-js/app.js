@@ -11,7 +11,7 @@ const Index = {
                         <h5 class="card-title">Cliente JavaScript</h5>
                         <p class="card-text">
                             Utilizando <strong>Node.js 14.15.0</strong>.
-                            No frontend, utilizando <strong>Bootstrap 5</strong>.
+                            No frontend, utilizando <strong>Bootstrap 5</strong> e <strong>Vue.js 2.6.12</strong>.
                         </p>
                     </div>
                 </div>
@@ -195,15 +195,102 @@ const Calc = {
     `
 }
 
+const UserList = {
+    data() {
+        return {
+            adicionado: null,
+            removido: null,
+            usuarios: null,
+        }
+    },
+    methods: {
+        load() {
+            fetch('http://localhost:5000/users').then((usuarios) => {
+                usuarios.json().then((users) => {
+                    this.usuarios = users;
+                });
+            });
+        }
+    },
+    created() {
+        this.load();
+    },
+    template: `
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title float-start">Gerenciador de usuários</h5>
+                                <router-link class="btn btn-success btn-sm float-end" to="/gerenciador/adicionar">Adicionar usuário</router-link>
+                            </div>
+                        </div>
+                        <div class="card-text">
+                            <div class="row" v-if="adicionado">
+                                <div class="col">
+                                    <div class="alert alert-success fade show" role="alert">
+                                        {{ adicionado }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" v-if="removido">
+                                <div class="col">
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ removido }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" v-if="usuarios && usuarios.length === 0">
+                                <div class="col">
+                                    <div class="alert alert-danger" role="alert">
+                                        Nenhum usuário cadastrado
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-striped" v-if="usuarios && usuarios.length > 0">
+                                <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Idade</th>
+                                    <th>Ocupação</th>
+                                    <th>Ações</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="user in usuarios">
+                                    <td class="w-25">{{ user.nome }}</td>
+                                    <td class="w-25">{{ user.idade }}</td>
+                                    <td class="w-40">{{ user.ocupacao }}</td>
+                                    <td class="w-auto">
+                                        <router-link class="btn btn-primary btn-sm" :to="'/gerenciador/editar/' + user.nome">Editar</router-link>
+                                        <router-link class="btn btn-danger btn-sm" :to="'/gerenciador/remover/' + user.nome">Remover</router-link>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+}
+
 // Rotas do Vue.js
 const routes = [
   { path: '/', component: Index },
   { path: '/cpf', component: Cpf },
-  { path: '/calculo', component: Calc }
+  { path: '/calculo', component: Calc },
+  { path: '/gerenciador', component: UserList },
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  linkExactActiveClass: 'active',
 })
 
 // Inicia o Vue

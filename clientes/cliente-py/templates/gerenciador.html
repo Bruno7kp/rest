@@ -45,12 +45,15 @@
 		                {% endif %}
 		                {% if status == 200 %}
 		                <table class="table table-bordered table-striped">
+			                <thead>
 			                <tr>
 				                <th>Usuário</th>
 				                <th>Idade</th>
 				                <th>Ocupação</th>
 				                <th>Ações</th>
 			                </tr>
+			                </thead>
+			                <tbody>
 			                {% for user in users %}
 			                <tr>
 				                <td class="w-25">{{ user.nome }}</td>
@@ -62,6 +65,7 @@
 				                </td>
 			                </tr>
 			                {% endfor %}
+			                </tbody>
 		                </table>
 		                {% endif %}
 		            </div>
