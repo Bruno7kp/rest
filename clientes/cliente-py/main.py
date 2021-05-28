@@ -46,13 +46,14 @@ def calc():
         value = response.text
         # Se retornou sucesso...
         if status == 200:
-            # Formata o valor para adicionar os números e a operação selecionada pelo usuário
+            # Formata o valor para mostrar os números e a operação selecionada pelo usuário
             replaceable = {'soma': '+', 'subtracao': '-', 'multiplicacao': '*', 'divisao': '/', 'resto': '%', 'potenciacao': '**'}
             # Assim mostra a conta completa ao invés de apenas o resultado (ex: 1 + 1 = 2)
             value = value1 + " " + replaceable[operator] + " " + value2 + " = " + response.text
     return render_template('calc.html', status=status, result=value)
 
 
+# Rota para a página inicial do gerenciador
 @app.route("/gerenciador")
 def gerenciador():
     # Na página inicial do gerenciador, faz a busca de todos os usuários
@@ -61,6 +62,8 @@ def gerenciador():
     response = requests.get(base_url)
     status = response.status_code
     users = response.json()
+    # Verifica se há parâmetro sen enviados pela query (ex: ?removido=200)
+    # Esses parâmetros são usados para mostrar mensagem na tela, caso esteja sendo redirecionada de outra página
     removido = request.args.get('removido')
     removido_status = request.args.get('removido_status')
     adicionado = request.args.get('adicionado')
