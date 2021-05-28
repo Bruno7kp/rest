@@ -1,5 +1,6 @@
+// Adiciona plugin de máscara para o preenchimento do CPF
 Vue.use(VueTheMask)
-
+// Componente da página inicial
 const Index = {
     template: `
     <div class="container">
@@ -61,13 +62,16 @@ const Index = {
     `
 }
 
+// Componente do validador de cpf
 const Cpf = {
     data() {
+        // Valores iniciais são vazios
         return {
             cpf: null,
             valido: null,
         }
     },
+    // Sempre que trocar o valor do cpf, limpa o alerta de sucesso/erro
     watch: {
         cpf(v) {
             this.valido = null;
@@ -75,6 +79,7 @@ const Cpf = {
     },
     methods: {
         send() {
+            // Faz a requisição para validar o cpf
             fetch('http://localhost:5000/cpf/' + this.cpf)
             .then((response) => {
                 this.valido = response.status == 200;
@@ -110,6 +115,7 @@ const Cpf = {
     `
 }
 
+// Componente da calculadora
 const Calc = {
     data() {
         return {
@@ -122,6 +128,7 @@ const Calc = {
     },
     methods: {
         send() {
+            // Faz a requisição para o servidor
             fetch('http://localhost:5000/calc/' + this.num1 + '/' + this.operador + '/' + this.num2)
             .then((response) => {
                 this.valido = response.status == 200;
@@ -135,6 +142,7 @@ const Calc = {
                     });
                 } else {
                     response.text().then((txt) => {
+                        // Mostra mensagem de erro
                         this.resultado = txt;
                     });
                 }
@@ -187,19 +195,18 @@ const Calc = {
     `
 }
 
-
+// Rotas do Vue.js
 const routes = [
   { path: '/', component: Index },
   { path: '/cpf', component: Cpf },
   { path: '/calculo', component: Calc }
 ]
 
-//
 const router = new VueRouter({
-  routes // short for `routes: routes`
+  routes
 })
 
-//
+// Inicia o Vue
 const app = new Vue({
   router
 }).$mount('#app')
