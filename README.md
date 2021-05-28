@@ -64,3 +64,18 @@ Versão utilizada: 1.16.4
 ```
 go run clientes/cliente.go
 ```
+
+
+### Com interface gráfica
+
+**Python**
+
+Versão utilizada: 3.9.5
+
+Bibliotecas: Flask 2.0.1, Bootstrap 5
+
+```
+python clientes/cliente-py/main.py
+```
+
+---

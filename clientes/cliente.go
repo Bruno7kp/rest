@@ -231,7 +231,11 @@ func main() {
             }
             // Se não tiver problemas, mostra o resultado e o status http
             fmt.Print("Resultado: ")
-            fmt.Println(string(responseData))
+            if (string(responseData) == "true") {
+                fmt.Println("Válido (" + string(responseData) + ")")
+            } else {
+                fmt.Println("Inválido (" + string(responseData) + ")")
+            }
             fmt.Print("Código HTTP: ")
             fmt.Println(response.StatusCode)
         } else if "CALC" == action {

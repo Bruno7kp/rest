@@ -49,7 +49,7 @@ def calc():
             # Formata o valor para mostrar os números e a operação selecionada pelo usuário
             replaceable = {'soma': '+', 'subtracao': '-', 'multiplicacao': '*', 'divisao': '/', 'resto': '%', 'potenciacao': '**'}
             # Assim mostra a conta completa ao invés de apenas o resultado (ex: 1 + 1 = 2)
-            value = value1 + " " + replaceable[operator] + " " + value2 + " = " + response.text
+            value = value1 + " " + replaceable[operator] + " " + value2 + " = " + response.text.replace('.', ',')
     return render_template('calc.html', status=status, result=value)
 
 

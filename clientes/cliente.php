@@ -209,13 +209,14 @@ while (true):
         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         # Remove o header, deixando apenas o body (a resposta em texto ou json do servidor)
         $body = substr($response, $header_size);
+        $decoded = json_decode($body);
         # Pega o status HTTP da requisição
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         # Fecha a conexão
         curl_close($curl);
 
         # Mostra o resultado, utilizando o colorLog, para mostrar cores diferentes se for sucesso ou erro
-        echo "Resultado: " . colorLog($body, $httpcode);
+        echo "Resultado: " . colorLog($decoded ? "Válido (".$body.")" : "Inválido (".$body.")", $httpcode);
         echo PHP_EOL;
         echo "Código HTTP: " . colorLog($httpcode, $httpcode);
         echo PHP_EOL;
