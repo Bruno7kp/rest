@@ -210,6 +210,17 @@ const UserList = {
                     this.usuarios = users;
                 });
             });
+        },
+        remover(nome) {
+            fetch('http://localhost:5000/user/' + nome, {method:'DELETE'}).then((response) => {
+                response.text().then((txt) => {
+                    this.removido = txt;
+                    this.load();
+                    setTimeout(() => {
+                        this.removido = null;
+                    }, 3000);
+                });
+            });
         }
     },
     created() {
@@ -266,7 +277,7 @@ const UserList = {
                                     <td class="w-40">{{ user.ocupacao }}</td>
                                     <td class="w-auto">
                                         <router-link class="btn btn-primary btn-sm" :to="'/gerenciador/editar/' + user.nome">Editar</router-link>
-                                        <router-link class="btn btn-danger btn-sm" :to="'/gerenciador/remover/' + user.nome">Remover</router-link>
+                                        <button class="btn btn-danger btn-sm" @click="remover(user.nome)">Remover</button>
                                     </td>
                                 </tr>
                                 </tbody>

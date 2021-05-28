@@ -32,6 +32,7 @@ def page_not_found(e):
 @app.after_request
 def apply_caching(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE"
     return response
 
 
