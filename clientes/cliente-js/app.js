@@ -1,3 +1,5 @@
+Vue.use(VueTheMask)
+
 const Index = {
     template: `
     <div class="container">
@@ -58,12 +60,60 @@ const Index = {
     </div>
     `
 }
-const Bar = { template: '<div>bar</div>' }
+
+const Cpf = {
+    data() {
+        return {
+            cpf: null,
+            valido: null,
+        }
+    },
+    watch: {
+        cpf(v) {
+            this.valido = null;
+        },
+    },
+    methods: {
+        send() {
+            fetch('http://localhost:5000/cpf/' + this.cpf)
+            .then((response) => {
+                this.valido = response.status == 200;
+            });
+        },
+    },
+    template: `
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Validador de CPF</h5>
+                        <p class="card-text">Digite o CPF abaixo para validá-lo!</p>
+                        <form method="post">
+                            <label>
+                                Digite o CPF
+                                <the-mask class="form-control" :mask="['###.###.###-##']" masked="true" name="cpf" v-model="cpf" required />
+                            </label>
+                            <button class="btn btn-success" type="button" @click="send">Validar</button>
+                        </form>
+                        <div class="alert alert-danger" role="alert" v-if="valido === false">
+                          {{ cpf }} é um CPF inválido!
+                        </div>
+                        <div class="alert alert-success" role="alert" v-if="valido === true">
+                          {{ cpf }} é um CPF válido!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+}
 
 
 const routes = [
   { path: '/', component: Index },
-  { path: '/bar', component: Bar }
+  { path: '/cpf', component: Cpf }
 ]
 
 //

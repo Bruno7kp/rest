@@ -10,8 +10,13 @@ class Cpf(Resource):
         # Essa classe necessita apenas do GET, já que não precisa cadastrar nem remover nada, apenas validar o CPF
         # Se for válido retorna status 200 (sucesso), se não retorna status 400 (erro)
         if validate(cpf):
-            return Response(response=json.dumps(True), mimetype="application/json", status=200)
-        return Response(response=json.dumps(False), mimetype="application/json", status=400)
+            response = Response(response=json.dumps(True), mimetype="application/json", status=200)
+            # Header necessário para poder usar requisição via navegador/JavaScript
+            response.headers.add("Access-Control-Allow-Origin", "*")
+            return response
+        response = Response(response=json.dumps(False), mimetype="application/json", status=400)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
 
 
 # Método que valida o cpf
