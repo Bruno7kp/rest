@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% set active_page = "gerenciador" %}
+{% block title %}Adicionar usuário{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Editar {{ user.nome }}</h5>
+	                <div class="row">
+			                <div class="col">
+				                <div class="alert alert-secondary p-2 small" role="alert">
+					                Observação: Não é possível alterar o nome de usuário, pois ele é o identificador do mesmo.<br/>
+					                Se o nome for alterado no formulário, poderá editar outro usuário cadastrado, ou poderá criar um novo usuário.
+				                </div>
+			                </div>
+		                </div>
+	                <form method="post">
+		                <div class="row">
+			                <div class="col-md-3">
+				                <label>Nome</label>
+					            <input type="text" class="form-control" value="{{ user.nome }}" name="nome" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col-md-2">
+				                <label>Idade</label>
+					            <input type="number" class="form-control" value="{{ user.idade }}" name="idade" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col-md-3">
+				                <label>Ocupação</label>
+					            <input type="text" class="form-control" value="{{ user.ocupacao }}" name="ocupacao" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col">
+				                <button type="submit" class="btn btn-success mt-3">Salvar</button>
+			                </div>
+		                </div>
+	                </form>
+	                {% if status == 400 %}
+	                <div class="alert alert-danger" role="alert">
+					  {{ message }}
+					</div>
+	                {% endif %}
+	                {% if status == 200 %}
+	                <div class="alert alert-success" role="alert">
+					  {{ message }}
+		                <a href="/gerenciador" class="alert-link">Voltar para a lista de usuários.</a>
+					</div>
+	                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

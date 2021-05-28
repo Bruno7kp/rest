@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% set active_page = "gerenciador" %}
+{% block title %}Adicionar usuário{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Adicionar usuário</h5>
+	                <form method="post">
+		                <div class="row">
+			                <div class="col-md-3">
+				                <label>Nome</label>
+					            <input type="text" class="form-control" name="nome" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col-md-2">
+				                <label>Idade</label>
+					            <input type="number" class="form-control " name="idade" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col-md-3">
+				                <label>Ocupação</label>
+					            <input type="text" class="form-control" name="ocupacao" required>
+			                </div>
+		                </div>
+		                <div class="row">
+			                <div class="col">
+				                <button type="submit" class="btn btn-success mt-3">Salvar</button>
+			                </div>
+		                </div>
+	                </form>
+	                {% if status == 400 %}
+	                <div class="alert alert-danger" role="alert">
+					  {{ message }}
+					</div>
+	                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

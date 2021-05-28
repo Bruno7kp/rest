@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% set active_page = "gerenciador" %}
+{% block title %}Gerenciador de usuários{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card mt-5">
+                <div class="card-body">
+	                <div class="row">
+		                <div class="col">
+		                    <h5 class="card-title float-start">Gerenciador de usuários</h5>
+			                <a href="/gerenciador/adicionar" class="btn btn-success btn-sm float-end">Adicionar usuário</a>
+		                </div>
+	                </div>
+	                <div class="card-text">
+		                {% if adicionado %}
+		                <div class="row">
+			                <div class="col">
+				                <div class="alert alert-success alert-dismissible fade show" role="alert">
+					                {{ adicionado }}
+					                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+								</div>
+			                </div>
+		                </div>
+		                {% endif %}
+	                    {% if removido_status == 200 %}
+		                <div class="row">
+			                <div class="col">
+				                <div class="alert alert-success alert-dismissible fade show" role="alert">
+					                {{ removido }}
+					                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+								</div>
+			                </div>
+		                </div>
+		                {% endif %}
+		                {% if status != 200 %}
+		                <div class="row">
+			                <div class="col">
+				                <div class="alert alert-danger" role="alert">
+					                Não foi possível busca pelos usuários, tente novamente mais tarde
+								</div>
+				            </div>
+		                </div>
+		                {% endif %}
+		                {% if status == 200 %}
+		                <table class="table table-bordered table-striped">
+			                <tr>
+				                <th>Usuário</th>
+				                <th>Idade</th>
+				                <th>Ocupação</th>
+				                <th>Ações</th>
+			                </tr>
+			                {% for user in users %}
+			                <tr>
+				                <td class="w-25">{{ user.nome }}</td>
+				                <td class="w-25">{{ user.idade }}</td>
+				                <td class="w-40">{{ user.ocupacao }}</td>
+				                <td class="w-auto">
+					                <a class="btn btn-primary btn-sm" href="/gerenciador/editar/{{user.nome}}">Editar</a>
+					                <a class="btn btn-danger btn-sm" href="/gerenciador/remover/{{user.nome}}">Remover</a>
+				                </td>
+			                </tr>
+			                {% endfor %}
+		                </table>
+		                {% endif %}
+		            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
