@@ -110,10 +110,88 @@ const Cpf = {
     `
 }
 
+const Calc = {
+    data() {
+        return {
+            num1: null,
+            num2: null,
+            operador: null,
+            resultado: null,
+            valido: null,
+        }
+    },
+    methods: {
+        send() {
+            fetch('http://localhost:5000/calc/' + this.num1 + '/' + this.operador + '/' + this.num2)
+            .then((response) => {
+                this.valido = response.status == 200;
+                if (this.valido) {
+                    response.text().then((txt) => {
+                        // Formata o valor para mostrar os números e a operação selecionada pelo usuário
+                        let replaceable = {'soma': '+', 'subtracao': '-', 'multiplicacao': '*', 'divisao': '/', 'resto': '%', 'potenciacao': '**'}
+                        // Assim mostra a conta completa ao invés de apenas o resultado (ex: 1 + 1 = 2)
+                        txt = this.num1 + " " + replaceable[this.operador] + " " + this.num2 + " = " + txt.replace('.', ',')
+                        this.resultado = txt;
+                    });
+                } else {
+                    response.text().then((txt) => {
+                        this.resultado = txt;
+                    });
+                }
+            });
+        },
+    },
+    template: `
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Cálculo</h5>
+                        <p class="card-text">Digite dois número e selecione o operador para realizar a conta!</p>
+                        <form method="post">
+                            <label>
+                                Digite o primeiro número
+                                <input type="text" class="form-control" name="num1" v-model="num1" required>
+                            </label>
+                            <label>
+                                Selecione o operador
+                                <select name="operador" class="form-select" v-model="operador" required>
+                                    <option :value="null" selected>Selecione o operador</option>
+                                    <option value="soma">(+) Soma</option>
+                                    <option value="subtracao">(-) Subtração</option>
+                                    <option value="multiplicacao">(*) Multiplicação</option>
+                                    <option value="divisao">(/) Divisão</option>
+                                    <option value="resto">(%) Resto da divisão</option>
+                                    <option value="potenciacao">(**) Potenciação</option>
+                                </select>
+                            </label>
+                            <label>
+                                Digite o segundo número
+                                <input type="text" class="form-control" name="num2" v-model="num2" required>
+                            </label>
+
+                            <button type="button" @click="send" class="btn btn-success">Calcular</button>
+                        </form>
+                        <div class="alert alert-danger" role="alert" v-if="valido === false">
+                          {{ resultado }}
+                        </div>
+                        <div class="alert alert-success" role="alert" v-if="valido === true">
+                          Resultado: {{ resultado }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+}
+
 
 const routes = [
   { path: '/', component: Index },
-  { path: '/cpf', component: Cpf }
+  { path: '/cpf', component: Cpf },
+  { path: '/calculo', component: Calc }
 ]
 
 //

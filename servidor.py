@@ -28,5 +28,12 @@ def page_not_found(e):
     return Response(response="Recurso não encontrado", mimetype="text/plain", status=404)
 
 
+# Header necessário para poder usar requisição via navegador/JavaScript
+@app.after_request
+def apply_caching(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
 # Inicia o servidor
 app.run(debug=True)
