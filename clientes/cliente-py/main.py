@@ -73,8 +73,8 @@ def gerenciador():
                            removido_status=removido_status, adicionado=adicionado)
 
 
-# Rota para remover o ususário, como não foi usado JS para as requisições, e não é possível fazer uma requisição...
-# ... com o método DELETE e nem o método PUT, foi preciso criar uma url recebendo vie GET para utilizar o REST
+# Rota para remover o usuário, como não foi usado JS para as requisições, e não é possível fazer uma requisição...
+# ... com o método DELETE e nem o método PUT, foi preciso criar uma url recebendo via GET para utilizar o REST
 @app.route("/gerenciador/remover/<string:nome>")
 def remover(nome):
     # Faz a requisição para remover
