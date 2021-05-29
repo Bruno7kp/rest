@@ -78,7 +78,8 @@ const Cpf = {
         },
     },
     methods: {
-        send() {
+        send(e) {
+            e.preventDefault();
             // Faz a requisição para validar o cpf
             fetch('http://localhost:5000/cpf/' + this.cpf)
             .then((response) => {
@@ -94,12 +95,12 @@ const Cpf = {
                     <div class="card-body">
                         <h5 class="card-title">Validador de CPF</h5>
                         <p class="card-text">Digite o CPF abaixo para validá-lo!</p>
-                        <form method="post">
+                        <form @submit="send">
                             <label>
                                 Digite o CPF
                                 <the-mask class="form-control" :mask="['###.###.###-##']" masked="true" name="cpf" v-model="cpf" required />
                             </label>
-                            <button class="btn btn-success" type="button" @click="send">Validar</button>
+                            <button class="btn btn-success" type="submit">Validar</button>
                         </form>
                         <div class="alert alert-danger" role="alert" v-if="valido === false">
                           {{ cpf }} é um CPF inválido!
@@ -127,7 +128,8 @@ const Calc = {
         }
     },
     methods: {
-        send() {
+        send(e) {
+            e.preventDefault();
             // Faz a requisição para o servidor
             fetch('http://localhost:5000/calc/' + this.num1 + '/' + this.operador + '/' + this.num2)
             .then((response) => {
@@ -157,7 +159,7 @@ const Calc = {
                     <div class="card-body">
                         <h5 class="card-title">Cálculo</h5>
                         <p class="card-text">Digite dois número e selecione o operador para realizar a conta!</p>
-                        <form method="post">
+                        <form @submit="send">
                             <label>
                                 Digite o primeiro número
                                 <input type="text" class="form-control" name="num1" v-model="num1" required>
@@ -179,7 +181,7 @@ const Calc = {
                                 <input type="text" class="form-control" name="num2" v-model="num2" required>
                             </label>
 
-                            <button type="button" @click="send" class="btn btn-success">Calcular</button>
+                            <button type="submit" class="btn btn-success">Calcular</button>
                         </form>
                         <div class="alert alert-danger" role="alert" v-if="valido === false">
                           {{ resultado }}
@@ -196,12 +198,20 @@ const Calc = {
 }
 
 const UserList = {
+    props: ['cadastrado'],
     data() {
         return {
-            adicionado: null,
             removido: null,
             usuarios: null,
         }
+    },
+    computed: {
+        adicionado() {
+            if (typeof this.cadastrado === 'undefined') {
+                return null;
+            }
+            return this.cadastrado;
+        },
     },
     methods: {
         load() {
@@ -235,7 +245,7 @@ const UserList = {
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title float-start">Gerenciador de usuários</h5>
-                                <router-link class="btn btn-success btn-sm float-end" to="/gerenciador/adicionar">Adicionar usuário</router-link>
+                                <router-link class="btn btn-success btn-sm float-end" to="/gerenciador-cadastro">Adicionar usuário</router-link>
                             </div>
                         </div>
                         <div class="card-text">
@@ -276,7 +286,7 @@ const UserList = {
                                     <td class="w-25">{{ user.idade }}</td>
                                     <td class="w-40">{{ user.ocupacao }}</td>
                                     <td class="w-auto">
-                                        <router-link class="btn btn-primary btn-sm" :to="'/gerenciador/editar/' + user.nome">Editar</router-link>
+                                        <router-link class="btn btn-primary btn-sm" :to="'/gerenciador/' + user.nome">Editar</router-link>
                                         <button class="btn btn-danger btn-sm" @click="remover(user.nome)">Remover</button>
                                     </td>
                                 </tr>
@@ -291,20 +301,177 @@ const UserList = {
     `
 }
 
+const UserForm = {
+    props: ['nome'],
+    data() {
+        return  {
+            usuario: {nome:null,idade:null,ocupacao:null},
+            status: null,
+            message: null,
+        }
+    },
+    computed: {
+        is_post() {
+            return typeof this.nome === 'undefined';
+        }
+    },
+    watch: {
+        usuario: {
+            deep: true,
+            handler() {
+                this.status = null;
+                this.message = null;
+            }
+        },
+    },
+    methods: {
+        send(e) {
+            e.preventDefault();
+            if (this.is_post) {
+                this.post();
+            } else {
+                this.put();
+            }
+        },
+        put() {
+            let data = new FormData();
+            data.append('idade', this.usuario.idade);
+            data.append('ocupacao', this.usuario.ocupacao);
+            fetch('http://localhost:5000/user/' + this.usuario.nome, {
+                method:'PUT',
+                body: data,
+            }).then((resultado) => {
+                if (resultado.status === 201) {
+                    this.$router.push({path: '/gerenciador'});
+                    app.$emit('cadastrado', this.usuario.nome + ' adicionado(a).');
+                } else {
+                    this.status = resultado.status;
+                    if (resultado.status === 200) {
+                        this.message = this.usuario.nome + ' atualizado(a).';
+                    } else {
+                        this.message = 'Oops, não foi possível atualizar o usuário.';
+                    }
+                }
+            });
+        },
+        post() {
+            let data = new FormData();
+            data.append('idade', this.usuario.idade);
+            data.append('ocupacao', this.usuario.ocupacao);
+            fetch('http://localhost:5000/user/' + this.usuario.nome, {
+                method:'POST',
+                body: data,
+            }).then((resultado) => {
+                if (resultado.status === 201) {
+                    this.$router.push({path: '/gerenciador'});
+                    app.$emit('cadastrado', this.usuario.nome + ' adicionado(a).');
+                } else {
+                    this.status = resultado.status;
+                    resultado.text().then((txt) => {
+                        this.message = txt;
+                    });
+                }
+            });
+        },
+    },
+    created() {
+        if (typeof this.nome !== 'undefined' && this.nome !== null) {
+            fetch('http://localhost:5000/user/' + this.nome).then((resultado) => {
+                if (resultado.status === 200) {
+                    resultado.json().then((usuario) => {
+                       this.usuario = usuario;
+                    });
+                } else {
+                    this.$router.push({path: '/gerenciador'});
+                }
+            });
+        }
+    },
+    template: `
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title" v-if="!is_post">Editar {{ usuario.nome }}</h5>
+                        <h5 class="card-title" v-else>Adicionar usuário</h5>
+                        <div class="row" v-if="!is_post">
+                            <div class="col">
+                                <div class="alert alert-secondary p-2 small" role="alert">
+                                    Observação: Não é possível alterar o nome de usuário, pois ele é o identificador do mesmo.<br/>
+                                    Se o nome for alterado no formulário, poderá editar outro usuário cadastrado, ou poderá criar um novo usuário.
+                                </div>
+                            </div>
+                        </div>
+                        <form @submit="send">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Nome</label>
+                                    <input type="text" class="form-control" v-model="usuario.nome" name="nome" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Idade</label>
+                                    <input type="number" class="form-control" v-model="usuario.idade" name="idade" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Ocupação</label>
+                                    <input type="text" class="form-control" v-model="usuario.ocupacao" name="ocupacao" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success mt-3">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-danger" role="alert" v-if="status === 400">
+                          {{ message }}
+                        </div>
+                        <div class="alert alert-success" role="alert" v-if="status === 200">
+                          {{ message }}
+                          <router-link class="alert-link" :to="'/gerenciador'">Voltar para a lista de usuários.</router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+};
+
 // Rotas do Vue.js
 const routes = [
   { path: '/', component: Index },
   { path: '/cpf', component: Cpf },
   { path: '/calculo', component: Calc },
-  { path: '/gerenciador', component: UserList },
+  { path: '/gerenciador', component: UserList, props: true },
+  { path: '/gerenciador/:nome', component: UserForm, props: true },
+  { path: '/gerenciador-cadastro', component: UserForm, props: true },
 ]
 
 const router = new VueRouter({
-  routes,
-  linkExactActiveClass: 'active',
+    routes,
+    linkExactActiveClass: 'active',
+
 })
 
 // Inicia o Vue
 const app = new Vue({
-  router
-}).$mount('#app')
+    router,
+    data() {
+        return {cadastrado: null}
+    },
+    mounted() {
+        // Recebe mensagem de cadastro de usuário dos componentes e disponibiliza no componente raíz
+        this.$on('cadastrado', (c) => {
+            this.cadastrado = c;
+            setTimeout(() => {
+                this.cadastrado = null;
+            }, 3000);
+        });
+    },
+}).$mount('#app');

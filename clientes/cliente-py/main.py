@@ -116,6 +116,9 @@ def editar(nome):
     status = None
     message = None
     response = requests.get(base_url)
+    # Se o usuário não for encontrado, mostra erro 404
+    if response.status_code == 404:
+        return response.text, 404
     user = response.json()
     # Se o método for POST, significa que o formulário da página foi enviado pelo usuário
     if request.method == 'POST':
