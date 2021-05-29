@@ -86,5 +86,6 @@ class User(Resource):
 class UserSearchAll(Resource):
     def get(self):
         users = db.all()
-        return Response(response=json.dumps(users, ensure_ascii=False), mimetype='application/json', status=200)
+        sort = sorted(users, key=lambda x: x['nome'])
+        return Response(response=json.dumps(sort, ensure_ascii=False), mimetype='application/json', status=200)
 

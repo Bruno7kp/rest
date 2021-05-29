@@ -197,12 +197,14 @@ const Calc = {
     `
 }
 
+// Componente para a lista de usuários
 const UserList = {
+    // Propriedade passada pelo componente raíz, usado para mostrar mensagem de usuário cadastrado
     props: ['cadastrado'],
     data() {
         return {
-            removido: null,
-            usuarios: null,
+            removido: null, // Mostra mensagem de usuário removido
+            usuarios: null, // Lista de usuários
         }
     },
     computed: {
@@ -215,6 +217,7 @@ const UserList = {
     },
     methods: {
         load() {
+            // Carrega lista de usuário
             fetch('http://localhost:5000/users').then((usuarios) => {
                 usuarios.json().then((users) => {
                     this.usuarios = users;
@@ -222,10 +225,14 @@ const UserList = {
             });
         },
         remover(nome) {
+            // Remove usuário
             fetch('http://localhost:5000/user/' + nome, {method:'DELETE'}).then((response) => {
                 response.text().then((txt) => {
+                    // Mensagem de usuário removido
                     this.removido = txt;
+                    // Atualiza a lista de usuários
                     this.load();
+                    // Depois de 3 segundos, tira a mensagem de removido
                     setTimeout(() => {
                         this.removido = null;
                     }, 3000);
@@ -234,6 +241,7 @@ const UserList = {
         }
     },
     created() {
+        // Carrega lista de usuário logo que o componente for carregado
         this.load();
     },
     template: `
@@ -301,22 +309,29 @@ const UserList = {
     `
 }
 
+// Componente para o formulário de cadastro e edição de usuário
 const UserForm = {
+    // Propriedade passada por parâmetro da rota, se for cadastro, essa propriedade fica como 'undefined'
     props: ['nome'],
     data() {
         return  {
+            // Valor inicial do usuário
             usuario: {nome:null,idade:null,ocupacao:null},
+            // Status http da resposta do servidor, usado para mostrar mensagens
             status: null,
+            // Mensagem de resposta do servidor
             message: null,
         }
     },
     computed: {
         is_post() {
+            // 'Atalho' para indicar se é necessário usar o método POST (se estamos na tela de cadastro e não em edição)
             return typeof this.nome === 'undefined';
         }
     },
     watch: {
         usuario: {
+            // Sempre que o usuário tiver algum dado atualizado no formulário, apaga as mensagens que estão sendo mostradas na tela
             deep: true,
             handler() {
                 this.status = null;
@@ -326,6 +341,7 @@ const UserForm = {
     },
     methods: {
         send(e) {
+            // Envia a requisição, dependendo se está na tela de cadastro (post) ou edição (put)
             e.preventDefault();
             if (this.is_post) {
                 this.post();
@@ -334,6 +350,7 @@ const UserForm = {
             }
         },
         put() {
+            // Se está editando...
             let data = new FormData();
             data.append('idade', this.usuario.idade);
             data.append('ocupacao', this.usuario.ocupacao);
@@ -341,6 +358,7 @@ const UserForm = {
                 method:'PUT',
                 body: data,
             }).then((resultado) => {
+                // Se cadastrou um usuário, redireciona para a lista e mostra mensagem
                 if (resultado.status === 201) {
                     this.$router.push({path: '/gerenciador'});
                     app.$emit('cadastrado', this.usuario.nome + ' adicionado(a).');
@@ -355,6 +373,7 @@ const UserForm = {
             });
         },
         post() {
+            // Se está cadastrando...
             let data = new FormData();
             data.append('idade', this.usuario.idade);
             data.append('ocupacao', this.usuario.ocupacao);
@@ -362,10 +381,12 @@ const UserForm = {
                 method:'POST',
                 body: data,
             }).then((resultado) => {
+                // Se cadastrar, redireciona para a lista de usuários com mensagem de sucesso
                 if (resultado.status === 201) {
                     this.$router.push({path: '/gerenciador'});
                     app.$emit('cadastrado', this.usuario.nome + ' adicionado(a).');
                 } else {
+                    // Se não mostra o erro na tela do formulário
                     this.status = resultado.status;
                     resultado.text().then((txt) => {
                         this.message = txt;
@@ -375,6 +396,7 @@ const UserForm = {
         },
     },
     created() {
+        // Se foi passado o nome por parâmetro da rota do Vue.js, busca pelo usuário com esse nome
         if (typeof this.nome !== 'undefined' && this.nome !== null) {
             fetch('http://localhost:5000/user/' + this.nome).then((resultado) => {
                 if (resultado.status === 200) {
@@ -382,6 +404,7 @@ const UserForm = {
                        this.usuario = usuario;
                     });
                 } else {
+                    // Se não existir, apenas redireciona para a lista de usuários
                     this.$router.push({path: '/gerenciador'});
                 }
             });

@@ -5,8 +5,8 @@
 - [x] CRUD de usuários
 - [x] Validação de CPF
 - [x] Operação matemática simples
-- [ ] 4 clientes em linguagens diferentes
-- [ ] 2 cliente com interface gráfica (em deles em Python)
+- [x] 4 clientes em linguagens diferentes
+- [x] 2 cliente com interface gráfica (em deles em Python)
 - [x] 1 cliente em GO
 
 
@@ -79,3 +79,13 @@ python clientes/cliente-py/main.py
 ```
 
 ---
+
+**JavaScript / Node.js**
+
+Versão utilizada: 14.15.0
+
+Bibliotecas: Vue.js 2, Bootstrap 5
+
+```
+node clientes/cliente-js/main.js
+```
