@@ -23,7 +23,7 @@ const Index = {
                     <div class="card-body">
                         <h5 class="card-title">Gerenciador de usuários</h5>
                         <p class="card-text">Acesse o gerenciador para cadastrar, ver, editar e remover usuários!</p>
-                        <router-link class="btn btn-primary" to="/gerenciador">Gerenciar usuários</router-link>
+                        <router-link class="btn btn-warning" to="/gerenciador">Gerenciar usuários</router-link>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@ const Index = {
                     <div class="card-body">
                         <h5 class="card-title">Validador de CPF</h5>
                         <p class="card-text">Acesse a página para validar algum CPF!</p>
-                        <router-link class="btn btn-primary" to="/cpf">Validar CPF</router-link>
+                        <router-link class="btn btn-warning" to="/cpf">Validar CPF</router-link>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@ const Index = {
                     <div class="card-body">
                         <h5 class="card-title">Cálculo</h5>
                         <p class="card-text">Faça um cálculo simples entre dois números escolhendo um dos operadores!</p>
-                        <router-link class="btn btn-primary" to="/calculo">Calcular</router-link>
+                        <router-link class="btn btn-warning" to="/calculo">Calcular</router-link>
                     </div>
                 </div>
             </div>
